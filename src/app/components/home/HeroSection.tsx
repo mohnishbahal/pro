@@ -80,7 +80,7 @@ export default function HeroSection() {
               className="inline-block px-3 py-1 text-sm font-semibold text-blue-600 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-4"
             >
               <span className="animate-pulse mr-2">🚀</span>
-              The Future of Product Development
+              AI-Powered Product Innovation
             </motion.div>
             
             <motion.h1 
@@ -90,10 +90,10 @@ export default function HeroSection() {
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6"
             >
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                Where Ideas Become Reality
+                Transform Ideas Into Products
               </span> 
               <br />
-              <span>With AI-Powered Flow</span>
+              <span>10x Faster With AI</span>
             </motion.h1>
             
             <motion.p 
@@ -102,7 +102,7 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-4 max-w-xl mx-auto lg:mx-0"
             >
-              Begin your journey from concept to creation. ProFlow's AI ecosystem transforms how products are built, making innovation accessible to everyone, regardless of technical background.
+              ProFlow gives product teams an unfair advantage. Our AI mentors guide you from fuzzy idea to market-ready product, eliminating roadblocks and accelerating innovation at every stage.
             </motion.p>
             
             <motion.div 
@@ -184,11 +184,11 @@ export default function HeroSection() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <Link href="/get-started" className="group px-8 py-3 font-medium bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
-                Start Your First Idea
+                Start Free Trial
                 <span className="inline-block ml-2 transition-transform group-hover:translate-x-1">→</span>
               </Link>
               <Link href="/demo" className="group px-8 py-3 font-medium bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-gray-700 rounded-xl hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors shadow-md">
-                Watch 2-Min Demo
+                See 2-Min Demo
                 <span className="inline-block ml-1 transition-transform group-hover:translate-x-1">▶</span>
               </Link>
             </motion.div>
@@ -245,8 +245,8 @@ export default function HeroSection() {
               </div>
               
               <div className="text-center mb-4">
-                <h3 className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400">Continuous FLOW System</h3>
-                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Ideas to production without sprints or bottlenecks</p>
+                <h3 className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400">Continuous FLOW System™</h3>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Eliminate bottlenecks with AI-guided product development</p>
               </div>
               
               <div className="relative">
@@ -341,12 +341,12 @@ export default function HeroSection() {
                           </h4>
                         </div>
                         <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                          {currentStage === 0 && "Transform raw ideas into strategically aligned concepts with AI mentors"}
-                          {currentStage === 1 && "Convert refined ideas into visual designs and interactive prototypes"}
-                          {currentStage === 2 && "Define technical approach and optimal system design"}
-                          {currentStage === 3 && "Implement solutions with AI-assisted code generation"}
-                          {currentStage === 4 && "Validate quality through automated and guided testing"}
-                          {currentStage === 5 && "Seamlessly release to production with monitoring"}
+                          {currentStage === 0 && "AI mentors transform vague concepts into strategically aligned ideas with clear business value"}
+                          {currentStage === 1 && "Convert ideas into interactive mockups with AI-generated designs in minutes, not weeks"}
+                          {currentStage === 2 && "Get expert architecture recommendations optimized for scalability and performance"}
+                          {currentStage === 3 && "Build faster with AI pair programming that writes 80% of your code automatically"}
+                          {currentStage === 4 && "Generate comprehensive test cases that find bugs before your users do"}
+                          {currentStage === 5 && "Deploy confidently with automated infrastructure setup and real-time monitoring"}
                         </p>
                       </div>
                     </motion.div>
@@ -360,15 +360,15 @@ export default function HeroSection() {
                   whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.4)" }}
                   className="text-center p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl hover:shadow-lg transition-all cursor-pointer"
                 >
-                  <div className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">90%</div>
-                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-medium">Faster Cycles</div>
+                  <div className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">10x</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-medium">Faster to Market</div>
                 </motion.div>
                 <motion.div 
                   whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(124, 58, 237, 0.4)" }}
                   className="text-center p-3 sm:p-4 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl hover:shadow-lg transition-all cursor-pointer"
                 >
-                  <div className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">100%</div>
-                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-medium">Innovation Flow</div>
+                  <div className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">73%</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-medium">Cost Reduction</div>
                 </motion.div>
                 <motion.div 
                   whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(67, 56, 202, 0.4)" }}
