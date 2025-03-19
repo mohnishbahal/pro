@@ -251,14 +251,14 @@ export default function HeroSection() {
               
               <div className="relative">
                 {/* Pipeline graphic */}
-                <div className="h-16 sm:h-20 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-full my-6 sm:my-8 relative shadow-inner overflow-hidden">
+                <div className="h-16 sm:h-20 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-full my-6 sm:my-8 relative shadow-inner overflow-hidden flex items-center justify-center">
                   {/* Glass effect overlay */}
                   <div className="absolute inset-0 bg-white/10 dark:bg-white/5 rounded-full"></div>
                   
                   {/* Stage indicators */}
-                  <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-between px-2 sm:px-4 py-2">
+                  <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-between items-center px-2 sm:px-4">
                     {stages.map((stage, index) => (
-                      <div key={stage} className="relative flex flex-col items-center z-20">
+                      <div key={stage} className="relative flex flex-col items-center justify-center z-20">
                         <motion.div 
                           variants={circleVariants}
                           animate={index <= currentStage ? "active" : "inactive"}
@@ -280,7 +280,7 @@ export default function HeroSection() {
                               }}
                             />
                           )}
-                          <span className="font-semibold text-sm sm:text-base relative z-10">{index + 1}</span>
+                          <span className="font-semibold text-sm sm:text-base">{index + 1}</span>
                         </motion.div>
                         <div className="absolute -bottom-8 sm:-bottom-10 flex flex-col items-center">
                           <span className={`text-[10px] sm:text-xs font-medium whitespace-nowrap transition-colors duration-300 ${
@@ -299,8 +299,8 @@ export default function HeroSection() {
                     ))}
                   </div>
                   
-                  {/* Connection lines */}
-                  <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-600 transform -translate-y-1/2 z-[5]"></div>
+                  {/* Connection lines - moved below stage indicators so it doesn't obscure alignment */}
+                  <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-600 transform -translate-y-1/2 z-[1]"></div>
                   
                   {/* Progress bar */}
                   <motion.div 
@@ -333,7 +333,7 @@ export default function HeroSection() {
                       {/* Stage content */}
                       <div className="relative z-10">
                         <div className="flex items-center justify-center mb-2">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-indigo-600 text-white mr-2`}>
+                          <div className="w-8 h-8 rounded-full inline-flex items-center justify-center bg-indigo-600 text-white mr-2">
                             <span className="font-semibold">{currentStage + 1}</span>
                           </div>
                           <h4 className="text-base sm:text-lg font-bold text-indigo-700 dark:text-indigo-300">
