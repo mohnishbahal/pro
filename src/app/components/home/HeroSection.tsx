@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
 export default function HeroSection() {
@@ -11,14 +11,31 @@ export default function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentStage(prev => (prev + 1) % stages.length);
-    }, 2500);
+    }, 3000);
     return () => clearInterval(interval);
   }, [stages.length]);
 
   const stageVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.4 } }
+  };
+
+  const circleVariants = {
+    inactive: { scale: 1 },
+    active: { 
+      scale: 1.15, 
+      boxShadow: "0px 4px 20px rgba(79, 70, 229, 0.4)",
+      transition: { type: "spring", stiffness: 300, damping: 20 }
+    }
+  };
+  
+  const progressVariants = {
+    initial: { width: '0%' },
+    animate: { 
+      width: `${(currentStage / (stages.length - 1)) * 100}%`,
+      transition: { duration: 0.8, ease: "easeInOut" }
+    }
   };
 
   const scrollToNextSection = () => {
@@ -38,6 +55,21 @@ export default function HeroSection() {
       </div>
       
       <div className="container mx-auto px-4 relative">
+        {/* Add shimmer animation class */}
+        <style jsx global>{`
+          @keyframes shimmer {
+            from {
+              transform: translateX(-100%);
+            }
+            to {
+              transform: translateX(200%);
+            }
+          }
+          .animate-shimmer {
+            animation: shimmer 2s infinite;
+          }
+        `}</style>
+        
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
           {/* Left content */}
           <div className="lg:w-1/2 text-center lg:text-left">
@@ -169,83 +201,182 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="lg:w-1/2 w-full max-w-md mx-auto lg:max-w-none"
           >
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all relative overflow-hidden">
+              {/* Decorative particles */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <motion.div 
+                  className="absolute top-10 right-10 w-4 h-4 rounded-full bg-indigo-400 dark:bg-indigo-500 opacity-20"
+                  animate={{ 
+                    y: [0, -10, 0], 
+                    opacity: [0.4, 1, 0.4]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse"
+                  }}
+                />
+                <motion.div 
+                  className="absolute bottom-20 left-16 w-3 h-3 rounded-full bg-blue-400 dark:bg-blue-500 opacity-20"
+                  animate={{ 
+                    y: [0, -10, 0], 
+                    opacity: [0.4, 1, 0.4]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    delay: 0.5
+                  }}
+                />
+                <motion.div 
+                  className="absolute top-32 left-24 w-2 h-2 rounded-full bg-purple-400 dark:bg-purple-500 opacity-20"
+                  animate={{ 
+                    y: [0, -10, 0], 
+                    opacity: [0.4, 1, 0.4]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    delay: 1
+                  }}
+                />
+              </div>
+              
               <div className="text-center mb-4">
-                <h3 className="text-lg sm:text-xl font-bold">Continuous FLOW System</h3>
+                <h3 className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400">Continuous FLOW System</h3>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Ideas to production without sprints or bottlenecks</p>
               </div>
               
               <div className="relative">
                 {/* Pipeline graphic */}
-                <div className="h-14 sm:h-16 bg-gray-100 dark:bg-gray-700 rounded-full my-6 sm:my-8 relative">
+                <div className="h-16 sm:h-20 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-full my-6 sm:my-8 relative shadow-inner overflow-hidden">
+                  {/* Glass effect overlay */}
+                  <div className="absolute inset-0 bg-white/10 dark:bg-white/5 rounded-full"></div>
+                  
+                  {/* Stage indicators */}
                   <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-between px-2 sm:px-4 py-2">
                     {stages.map((stage, index) => (
-                      <div key={stage} className="relative flex flex-col items-center">
-                        <div 
-                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center z-10 transition-all duration-300 ${
-                            index <= currentStage 
-                              ? 'bg-indigo-600 text-white scale-110 shadow-lg' 
-                              : 'bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-400'
-                          }`}
+                      <div key={stage} className="relative flex flex-col items-center z-20">
+                        <motion.div 
+                          variants={circleVariants}
+                          animate={index <= currentStage ? "active" : "inactive"}
+                          className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 overflow-hidden
+                            ${index <= currentStage 
+                              ? 'bg-gradient-to-br from-indigo-500 to-blue-600 text-white' 
+                              : 'bg-gray-200/80 dark:bg-gray-600/80 text-gray-500 dark:text-gray-400 backdrop-blur-sm'
+                            }`}
                         >
-                          {index + 1}
+                          {index <= currentStage && (
+                            <motion.div
+                              className="absolute inset-0 bg-white opacity-20"
+                              animate={{ 
+                                opacity: [0.1, 0.2, 0.1],
+                              }}
+                              transition={{ 
+                                duration: 2,
+                                repeat: Infinity,
+                              }}
+                            />
+                          )}
+                          <span className="font-semibold text-sm sm:text-base relative z-10">{index + 1}</span>
+                        </motion.div>
+                        <div className="absolute -bottom-8 sm:-bottom-10 flex flex-col items-center">
+                          <span className={`text-[10px] sm:text-xs font-medium whitespace-nowrap transition-colors duration-300 ${
+                            index === currentStage ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400'
+                          }`}>
+                            {stage}
+                          </span>
+                          {index === currentStage && (
+                            <motion.div 
+                              layoutId="activeIndicator"
+                              className="h-0.5 w-full mt-1 bg-indigo-500 dark:bg-indigo-400 rounded-full"
+                            />
+                          )}
                         </div>
-                        <span className="absolute -bottom-6 sm:-bottom-8 text-[10px] sm:text-xs font-medium whitespace-nowrap">
-                          {stage}
-                        </span>
                       </div>
                     ))}
                   </div>
                   
+                  {/* Connection lines */}
+                  <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-600 transform -translate-y-1/2 z-[5]"></div>
+                  
                   {/* Progress bar */}
-                  <div 
-                    className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full"
-                    style={{ 
-                      width: `${(currentStage / (stages.length - 1)) * 100}%`,
-                      transition: 'width 0.8s ease-in-out'
-                    }}
-                  />
+                  <motion.div 
+                    className="h-full bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 rounded-full relative z-10"
+                    variants={progressVariants}
+                    initial="initial"
+                    animate="animate"
+                    key={currentStage}
+                  >
+                    {/* Replace noise texture with a simple opacity overlay */}
+                    <div className="absolute inset-0 bg-white/10 mix-blend-overlay"></div>
+                    <div className="absolute top-0 h-full w-20 bg-white/20 animate-shimmer"></div>
+                  </motion.div>
                 </div>
                 
                 {/* Current stage display */}
-                <div className="h-24 sm:h-28 mt-8 sm:mt-10 text-center">
-                  <motion.div
-                    key={currentStage}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    variants={stageVariants}
-                    className="bg-indigo-50 dark:bg-indigo-900/20 p-3 sm:p-4 rounded-xl shadow-sm"
-                  >
-                    <h4 className="text-base sm:text-lg font-bold text-indigo-700 dark:text-indigo-300">
-                      {stages[currentStage]} Stage
-                    </h4>
-                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                      {currentStage === 0 && "Transform raw ideas into strategically aligned concepts with AI mentors"}
-                      {currentStage === 1 && "Convert refined ideas into visual designs and interactive prototypes"}
-                      {currentStage === 2 && "Define technical approach and optimal system design"}
-                      {currentStage === 3 && "Implement solutions with AI-assisted code generation"}
-                      {currentStage === 4 && "Validate quality through automated and guided testing"}
-                      {currentStage === 5 && "Seamlessly release to production with monitoring"}
-                    </p>
-                  </motion.div>
+                <div className="h-32 sm:h-36 mt-12 sm:mt-14 text-center">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentStage}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={stageVariants}
+                      className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 p-4 sm:p-6 rounded-xl shadow-md relative overflow-hidden"
+                    >
+                      {/* Glass effect overlay */}
+                      <div className="absolute inset-0 bg-white/40 dark:bg-white/5 backdrop-blur-sm"></div>
+                      
+                      {/* Stage content */}
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-center mb-2">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-indigo-600 text-white mr-2`}>
+                            <span className="font-semibold">{currentStage + 1}</span>
+                          </div>
+                          <h4 className="text-base sm:text-lg font-bold text-indigo-700 dark:text-indigo-300">
+                            {stages[currentStage]} Stage
+                          </h4>
+                        </div>
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                          {currentStage === 0 && "Transform raw ideas into strategically aligned concepts with AI mentors"}
+                          {currentStage === 1 && "Convert refined ideas into visual designs and interactive prototypes"}
+                          {currentStage === 2 && "Define technical approach and optimal system design"}
+                          {currentStage === 3 && "Implement solutions with AI-assisted code generation"}
+                          {currentStage === 4 && "Validate quality through automated and guided testing"}
+                          {currentStage === 5 && "Seamlessly release to production with monitoring"}
+                        </p>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
               </div>
               
               {/* Key metrics */}
               <div className="mt-6 sm:mt-8 grid grid-cols-3 gap-2 sm:gap-4">
-                <div className="text-center p-2 sm:p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
-                  <div className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">90%</div>
-                  <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Faster Cycles</div>
-                </div>
-                <div className="text-center p-2 sm:p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
-                  <div className="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400">100%</div>
-                  <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Innovation Flow</div>
-                </div>
-                <div className="text-center p-2 sm:p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
-                  <div className="text-xl sm:text-2xl font-bold text-indigo-600 dark:text-indigo-400">6</div>
-                  <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">AI Mentors</div>
-                </div>
+                <motion.div 
+                  whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.4)" }}
+                  className="text-center p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl hover:shadow-lg transition-all cursor-pointer"
+                >
+                  <div className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">90%</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-medium">Faster Cycles</div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(124, 58, 237, 0.4)" }}
+                  className="text-center p-3 sm:p-4 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl hover:shadow-lg transition-all cursor-pointer"
+                >
+                  <div className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">100%</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-medium">Innovation Flow</div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(67, 56, 202, 0.4)" }}
+                  className="text-center p-3 sm:p-4 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl hover:shadow-lg transition-all cursor-pointer"
+                >
+                  <div className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">6</div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-medium">AI Mentors</div>
+                </motion.div>
               </div>
             </div>
           </motion.div>
