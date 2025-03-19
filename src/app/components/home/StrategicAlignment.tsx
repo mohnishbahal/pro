@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 const companyOKRs = [
   {
     id: 'growth',
-    title: 'Accelerate Growth',
-    description: 'Increase revenue by 40% YoY',
+    title: 'Revenue Growth',
+    description: 'Increase ARR by 65% within fiscal year',
     color: 'blue',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -15,15 +15,15 @@ const companyOKRs = [
       </svg>
     ),
     metrics: [
-      { title: 'New enterprise clients', target: '25+', value: '18', progress: 72 },
-      { title: 'User activation rate', target: '60%', value: '52%', progress: 86 },
-      { title: 'Revenue per customer', target: '$12K', value: '$9.2K', progress: 77 }
+      { title: 'Enterprise deal size', target: '$180K', value: '$145K', progress: 80 },
+      { title: 'Customer acquisition rate', target: '45/month', value: '38/month', progress: 84 },
+      { title: 'Expansion revenue', target: '40% of ARR', value: '32% of ARR', progress: 80 }
     ]
   },
   {
     id: 'experience',
-    title: 'Enhance UX',
-    description: 'Boost engagement and retention',
+    title: 'Product-Market Fit',
+    description: 'Achieve 65+ NPS and reduce churn to <5%',
     color: 'purple',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -31,15 +31,15 @@ const companyOKRs = [
       </svg>
     ),
     metrics: [
-      { title: 'Monthly active users', target: '100K', value: '78K', progress: 78 },
-      { title: 'Session duration', target: '12 min', value: '9.5 min', progress: 79 },
-      { title: 'User satisfaction', target: '4.8/5', value: '4.6/5', progress: 95 }
+      { title: 'Net Promoter Score', target: '65+', value: '58', progress: 89 },
+      { title: 'Customer retention', target: '95%', value: '91%', progress: 96 },
+      { title: 'User activation (14-day)', target: '75%', value: '68%', progress: 91 }
     ]
   },
   {
     id: 'innovation',
-    title: 'Drive Innovation',
-    description: 'Launch 3 new product categories',
+    title: 'Product Innovation',
+    description: 'Launch 5 game-changing AI features',
     color: 'emerald',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -47,9 +47,9 @@ const companyOKRs = [
       </svg>
     ),
     metrics: [
-      { title: 'New features launched', target: '24', value: '21', progress: 87 },
-      { title: 'R&D initiatives', target: '5', value: '3', progress: 60 },
-      { title: 'Patents filed', target: '8', value: '6', progress: 75 }
+      { title: 'Time-to-value', target: '≤ 7 days', value: '9 days', progress: 78 },
+      { title: 'AI feature adoption', target: '85%', value: '72%', progress: 85 },
+      { title: 'Innovation velocity', target: '4 wk cycle', value: '5.2 wk cycle', progress: 77 }
     ]
   }
 ];
@@ -117,11 +117,11 @@ export default function StrategicAlignment() {
       <div className="container mx-auto px-4 relative">
         <div className="text-center mb-10 sm:mb-16">
           <span className="inline-block px-3 py-1 text-sm font-semibold text-blue-500 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-3">
-            Business Impact
+            Strategic Alignment
           </span>
-          <h2 className="text-3xl font-bold mb-4">Ensuring Your Product Makes a Difference</h2>
+          <h2 className="text-3xl font-bold mb-4">Connect Products to Business Outcomes</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Connect your innovation directly to company goals. Align your product with strategic objectives to maximize impact and secure stakeholder support.
+            ProFlow automatically maps your product ideas to company goals, ensuring every feature drives measurable value. Focus on what matters most to achieve breakthrough results.
           </p>
         </div>
 
@@ -217,9 +217,9 @@ export default function StrategicAlignment() {
             {/* Product Ideas Panel */}
             <div className="flex flex-col space-y-6">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex-1">
-                <h3 className="text-xl font-bold mb-4">Aligned Product Ideas</h3>
+                <h3 className="text-xl font-bold mb-4">AI-Powered Alignment Engine</h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-6">
-                  Ideas are automatically scored based on their alignment with company objectives
+                  Every idea is automatically scored and prioritized based on its contribution to key business metrics
                 </p>
                 
                 {/* Visualization */}
@@ -305,9 +305,9 @@ export default function StrategicAlignment() {
               
               {/* Strategic Action */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                <h4 className="font-bold mb-2">Strategic Actions</h4>
+                <h4 className="font-bold mb-2">AI-Generated Strategic Actions</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                  Recommended next steps to improve alignment:
+                  ProFlow's AI recommends high-impact initiatives based on current metrics:
                 </p>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
@@ -315,7 +315,7 @@ export default function StrategicAlignment() {
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                     <span className="text-sm">
-                      Focus on initiatives that drive {selectedOKR.metrics[activeMetricIndex].title.toLowerCase()} to reach the target of {selectedOKR.metrics[activeMetricIndex].target}
+                      Prioritize features that directly impact {selectedOKR.metrics[activeMetricIndex].title.toLowerCase()} to reach {selectedOKR.metrics[activeMetricIndex].target} (currently at {selectedOKR.metrics[activeMetricIndex].value})
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -323,7 +323,15 @@ export default function StrategicAlignment() {
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                     <span className="text-sm">
-                      Develop features that strengthen alignment with the {selectedOKR.title.toLowerCase()} objective
+                      Run weekly alignment sprints to accelerate progress on "{selectedOKR.title}" with cross-functional teams
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${colorClasses.text} flex-shrink-0 mt-0.5`} viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">
+                      Consider reprioritizing roadmap to focus on the 3 features AI predicts will have highest impact on {selectedOKR.metrics[activeMetricIndex].title.toLowerCase()}
                     </span>
                   </li>
                 </ul>
