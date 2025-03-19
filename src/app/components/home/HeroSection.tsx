@@ -304,11 +304,17 @@ export default function HeroSection() {
                   
                   {/* Progress bar */}
                   <motion.div 
-                    className="h-full bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 rounded-full relative z-10"
+                    className="h-full bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 rounded-full relative z-10 origin-left"
                     variants={progressVariants}
                     initial="initial"
                     animate="animate"
                     key={currentStage}
+                    style={{ 
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      bottom: 0
+                    }}
                   >
                     {/* Replace noise texture with a simple opacity overlay */}
                     <div className="absolute inset-0 bg-white/10 mix-blend-overlay"></div>
