@@ -32,8 +32,34 @@ body {
   }
 }
 
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale(1.01);
+  }
+}
+
 .animate-dash {
   stroke-dasharray: 20;
   stroke-dashoffset: 20;
   animation: dash 1.5s ease-in-out forwards;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-300 {
+  animation-delay: 0.3s;
 }

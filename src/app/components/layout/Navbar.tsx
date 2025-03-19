@@ -31,7 +31,11 @@ export default function Navbar() {
         <nav className="flex justify-between items-center py-3 sm:py-4">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <Logo size={isScrolled ? 'small' : 'medium'} />
+              <Logo 
+                size={isScrolled ? 'small' : 'medium'} 
+                animated={true}
+                variant={isScrolled ? 'monochrome' : 'default'} 
+              />
             </Link>
           </div>
           
