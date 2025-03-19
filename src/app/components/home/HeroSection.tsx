@@ -90,10 +90,10 @@ export default function HeroSection() {
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6"
             >
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                Transform Ideas Into Powerful Products
+                Transform Ideas Into Products
               </span> 
               <br />
-              <span>With Lesser Tickets, More Value</span>
+              <span>10x Faster With AI</span>
             </motion.h1>
             
             <motion.p 
