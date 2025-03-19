@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { motion } from 'framer-motion';
 
 const companyOKRs = [
@@ -103,6 +103,9 @@ const getColorClasses = (color: string) => {
 export default function StrategicAlignment() {
   const [selectedOKR, setSelectedOKR] = useState(companyOKRs[0]);
   const [activeMetricIndex, setActiveMetricIndex] = useState(0);
+  
+  // Generate stable IDs for SVG elements
+  const gradientId = useId();
   
   const colorClasses = getColorClasses(selectedOKR.color);
   
@@ -238,22 +241,22 @@ export default function StrategicAlignment() {
                     <div className="absolute inset-0">
                       <svg viewBox="0 0 100 30" className="w-full h-full">
                         <defs>
-                          <linearGradient id={`gradient-${selectedOKR.id}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" className={`stop-color-${colorClasses.bg}`} stopColor="#4F46E5" />
-                            <stop offset="100%" className={`stop-color-${colorClasses.bg}`} stopColor="#0EA5E9" />
+                          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#4F46E5" />
+                            <stop offset="100%" stopColor="#0EA5E9" />
                           </linearGradient>
                         </defs>
                         
                         {/* Chart line */}
                         <path 
                           d="M0,30 C20,10 40,20 60,5 C80,15 100,0 100,0 L100,30 L0,30 Z" 
-                          fill={`url(#gradient-${selectedOKR.id})`} 
+                          fill={`url(#${gradientId})`} 
                           fillOpacity="0.2"
                         />
                         <path 
                           d="M0,30 C20,10 40,20 60,5 C80,15 100,0 100,0" 
                           fill="none"
-                          stroke={`url(#gradient-${selectedOKR.id})`} 
+                          stroke={`url(#${gradientId})`} 
                           strokeWidth="2"
                           strokeLinecap="round"
                         />
