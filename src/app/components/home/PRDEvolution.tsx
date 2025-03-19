@@ -124,13 +124,13 @@ const prdStages = [
 ];
 
 export default function PRDEvolution() {
-  const [currentStage, setCurrentStage] = useState('initial');
+  const [activeStage, setActiveStage] = useState(0);
   
   const handleStageChange = (index: number) => {
-    setCurrentStage(prdStages[index].id);
+    setActiveStage(index);
   };
   
-  const currentStageData = prdStages.find(stage => stage.id === currentStage);
+  const currentStageData = prdStages[activeStage];
   
   // Generate component based on content type
   const renderContentItem = (item: {type: string; text?: string; items?: string[]}, index: number) => {
@@ -173,27 +173,27 @@ export default function PRDEvolution() {
   };
 
   return (
-    <section className="py-20 bg-white dark:bg-gray-800">
+    <section className="py-16 sm:py-20 relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <span className="inline-block px-3 py-1 text-sm font-semibold text-blue-500 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-3">
-            Document Generation
+        <div className="text-center mb-10 sm:mb-12">
+          <span className="inline-block px-3 py-1 text-sm font-semibold text-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 rounded-full mb-3">
+            Structured Documentation
           </span>
-          <h2 className="text-3xl font-bold mb-4">From Rough Ideas to Polished PRDs</h2>
+          <h2 className="text-3xl font-bold mb-4">Crafting Your Blueprint for Success</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            See how ProFlow transforms scattered thoughts into comprehensive, well-structured product requirements documents.
+            See how your refined concept transforms into a comprehensive product document. Clear requirements form the foundation for bringing your vision to life.
           </p>
         </div>
 
         <div className="max-w-6xl mx-auto">
           {/* Stage selector tabs */}
-          <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto pb-1">
+          <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto pb-1 scrollbar-hide">
             {prdStages.map((stage, index) => (
               <button
                 key={stage.id}
                 onClick={() => handleStageChange(index)}
-                className={`px-4 py-2 text-sm font-medium whitespace-nowrap mr-2 rounded-t-lg transition-colors
-                  ${currentStage === stage.id 
+                className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium whitespace-nowrap mr-2 rounded-t-lg transition-colors
+                  ${activeStage === index 
                     ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-b-2 border-blue-500' 
                     : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
@@ -206,18 +206,18 @@ export default function PRDEvolution() {
           <div className="grid grid-cols-1 lg:grid-cols-7 gap-6">
             {/* Left panel - Stage information */}
             <div className="lg:col-span-2">
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 sticky top-4">
-                <h3 className="text-xl font-bold mb-2">{currentStageData?.title}</h3>
+              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 sm:p-6 mb-6 lg:mb-0 lg:sticky lg:top-4">
+                <h3 className="text-xl font-bold mb-2">{currentStageData.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                  {currentStageData?.description}
+                  {currentStageData.description}
                 </p>
                 
-                <div className="mt-6">
+                <div className="mt-4 sm:mt-6">
                   <h4 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Document Completion</h4>
                   <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-blue-500 transition-all duration-500 ease-out"
-                      style={{ width: `${(prdStages.indexOf(currentStageData) + 1) * 25}%` }}
+                      style={{ width: `${(activeStage + 1) * 25}%` }}
                     ></div>
                   </div>
                   <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -226,7 +226,7 @@ export default function PRDEvolution() {
                   </div>
                 </div>
                 
-                <div className="mt-6">
+                <div className="mt-4 sm:mt-6">
                   <h4 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Document Attributes</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
@@ -235,8 +235,8 @@ export default function PRDEvolution() {
                         {[...Array(4)].map((_, i) => (
                           <div 
                             key={i}
-                            className={`w-5 h-2 rounded-sm ml-1 ${
-                              i <= prdStages.indexOf(currentStageData) ? 'bg-blue-500' : 'bg-gray-200 dark:bg-gray-700'
+                            className={`w-4 sm:w-5 h-2 rounded-sm ml-1 ${
+                              i <= activeStage ? 'bg-blue-500' : 'bg-gray-200 dark:bg-gray-700'
                             }`}
                           ></div>
                         ))}
@@ -248,21 +248,21 @@ export default function PRDEvolution() {
                         {[...Array(4)].map((_, i) => (
                           <div 
                             key={i}
-                            className={`w-5 h-2 rounded-sm ml-1 ${
-                              i <= prdStages.indexOf(currentStageData) ? 'bg-emerald-500' : 'bg-gray-200 dark:bg-gray-700'
+                            className={`w-4 sm:w-5 h-2 rounded-sm ml-1 ${
+                              i <= activeStage ? 'bg-emerald-500' : 'bg-gray-200 dark:bg-gray-700'
                             }`}
                           ></div>
                         ))}
                       </div>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">Strategic Alignment</span>
+                      <span className="text-gray-600 dark:text-gray-400">Clarity</span>
                       <div className="flex">
                         {[...Array(4)].map((_, i) => (
                           <div 
                             key={i}
-                            className={`w-5 h-2 rounded-sm ml-1 ${
-                              i <= prdStages.indexOf(currentStageData) ? 'bg-purple-500' : 'bg-gray-200 dark:bg-gray-700'
+                            className={`w-4 sm:w-5 h-2 rounded-sm ml-1 ${
+                              i <= activeStage ? 'bg-purple-500' : 'bg-gray-200 dark:bg-gray-700'
                             }`}
                           ></div>
                         ))}
@@ -271,98 +271,51 @@ export default function PRDEvolution() {
                   </div>
                 </div>
                 
-                <div className="mt-8">
+                <div className="mt-6 sm:mt-8">
                   <button 
                     className={`w-full px-4 py-2 text-sm font-medium rounded-lg ${
-                      prdStages.indexOf(currentStageData) < prdStages.length - 1
+                      activeStage < prdStages.length - 1
                         ? 'bg-blue-500 hover:bg-blue-600 text-white'
                         : 'bg-emerald-500 hover:bg-emerald-600 text-white'
                     }`}
                     onClick={() => {
-                      if (prdStages.indexOf(currentStageData) < prdStages.length - 1) {
-                        handleStageChange(prdStages.indexOf(currentStageData) + 1);
+                      if (activeStage < prdStages.length - 1) {
+                        handleStageChange(activeStage + 1);
                       } else {
                         // Export action for completed document
                         alert('PRD ready for export!');
                       }
                     }}
                   >
-                    {prdStages.indexOf(currentStageData) < prdStages.length - 1 ? 'Continue Refining' : 'Export Document'}
+                    {activeStage < prdStages.length - 1 ? 'Continue Refining' : 'Export Document'}
                   </button>
                 </div>
               </div>
             </div>
             
-            {/* Right panel - Document preview */}
+            {/* Right panel - Document content */}
             <div className="lg:col-span-5">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
                 {/* Document header */}
-                <div className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
+                <div className="border-b border-gray-100 dark:border-gray-700 p-4 sm:p-5">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-500 flex items-center justify-center mr-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                    <div className="mr-3 w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
                     <div>
                       <h3 className="font-medium text-gray-800 dark:text-gray-200">TeamSync PRD</h3>
                       <div className="text-xs text-gray-500 dark:text-gray-400">
-                        Updated {prdStages.indexOf(currentStageData) > 0 ? (prdStages.indexOf(currentStageData) > 2 ? '2 hours ago' : '5 hours ago') : 'yesterday'}
+                        Updated {activeStage > 0 ? (activeStage > 2 ? '2 hours ago' : '5 hours ago') : 'yesterday'}
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex space-x-2">
-                    <button className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 p-1">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-                      </svg>
-                    </button>
-                    <button className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 p-1">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
-                    </button>
                   </div>
                 </div>
                 
                 {/* Document content */}
-                <motion.div 
-                  key={currentStageData?.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="p-6 max-h-[600px] overflow-y-auto"
-                >
-                  {currentStageData?.content.map((item, index) => renderContentItem(item, index))}
-                  
-                  {/* Empty state for incomplete documents */}
-                  {currentStageData && prdStages.indexOf(currentStageData) < 3 && (
-                    <div className="border-t border-dashed border-gray-200 dark:border-gray-700 mt-4 pt-4">
-                      <div className="flex items-center text-gray-400 dark:text-gray-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-sm italic">Content continues in next stage</span>
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-                
-                {/* Document footer */}
-                <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-3 text-xs text-gray-500 dark:text-gray-400 flex justify-between items-center">
-                  <div>
-                    {currentStageData && prdStages.indexOf(currentStageData) === 0 && 'Draft • 1 min read'}
-                    {currentStageData && prdStages.indexOf(currentStageData) === 1 && 'Draft • 2 min read'}
-                    {currentStageData && prdStages.indexOf(currentStageData) === 2 && 'Draft • 5 min read'}
-                    {currentStageData && prdStages.indexOf(currentStageData) === 3 && 'Ready for review • 8 min read'}
-                  </div>
-                  <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                    <span>AI-generated with ProFlow</span>
-                  </div>
+                <div className="p-4 sm:p-5 max-h-[500px] sm:max-h-[600px] md:max-h-[700px] lg:max-h-[800px] overflow-y-auto">
+                  {currentStageData.content.map((item, index) => renderContentItem(item, index))}
                 </div>
               </div>
             </div>

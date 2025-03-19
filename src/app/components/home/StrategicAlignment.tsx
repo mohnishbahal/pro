@@ -141,245 +141,130 @@ const getColorClasses = (color: string) => {
 export default function StrategicAlignment() {
   const [selectedOKR, setSelectedOKR] = useState(companyOKRs[0]);
   const [selectedIdea, setSelectedIdea] = useState(productIdeas[0]);
+  const [activeTool, setActiveTool] = useState('explore');
   
   const colorClasses = getColorClasses(selectedOKR.color);
   
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900 overflow-hidden relative">
-      {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 left-1/2 w-80 h-80 rounded-full bg-blue-50 dark:bg-blue-900/20 blur-3xl opacity-50"></div>
-        <div className="absolute top-60 -right-20 w-60 h-60 rounded-full bg-purple-50 dark:bg-purple-900/20 blur-3xl opacity-50"></div>
-      </div>
-      
+    <section className="py-16 sm:py-20 relative overflow-hidden">
       <div className="container mx-auto px-4 relative">
-        <div className="text-center mb-12">
-          <span className="inline-block px-3 py-1 text-sm font-semibold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 rounded-full mb-3">
-            Strategic Context
+        <div className="text-center mb-10 sm:mb-12">
+          <span className="inline-block px-3 py-1 text-sm font-semibold text-blue-500 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-3">
+            Business Impact
           </span>
-          <h2 className="text-3xl font-bold mb-4">Align Ideas with Business Strategy</h2>
+          <h2 className="text-3xl font-bold mb-4">Ensuring Your Product Makes a Difference</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            ProFlow automatically analyzes and scores product ideas against your company&apos;s OKRs and strategic initiatives.
+            Connect your innovation directly to company goals. Align your product with strategic objectives to maximize impact and secure stakeholder support.
           </p>
         </div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left panel - Company OKRs */}
-          <div className="lg:col-span-5">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-              <div className="border-b border-gray-100 dark:border-gray-700 p-4">
-                <h3 className="text-lg font-bold">Company Objectives</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Select an objective to see alignment</p>
-              </div>
-              
-              <div className="px-4 py-3">
-                {companyOKRs.map((okr) => {
-                  const okrColorClasses = getColorClasses(okr.color);
-                  return (
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
+            {/* Left panel - Company OKRs */}
+            <div className="lg:col-span-2">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold mb-4">Company OKRs</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                  ProFlow automatically connects your product ideas to company objectives and key results
+                </p>
+                
+                <div className="space-y-4">
+                  {companyOKRs.map((okr, index) => (
                     <button
-                      key={okr.id}
+                      key={index}
                       onClick={() => setSelectedOKR(okr)}
-                      className={`w-full mb-2 p-3 rounded-lg flex items-center text-left transition-all ${
-                        selectedOKR.id === okr.id 
-                          ? `${okrColorClasses.bgLight} ${okrColorClasses.text} border ${okrColorClasses.border} shadow-sm` 
-                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent'
+                      className={`w-full p-3 sm:p-4 rounded-xl text-left transition-all ${
+                        selectedOKR.id === okr.id
+                          ? 'bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700'
+                          : 'bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-100 dark:border-gray-700'
                       }`}
                     >
-                      <div className={`w-10 h-10 rounded-full ${okrColorClasses.bg} text-white flex items-center justify-center flex-shrink-0`}>
-                        {okr.icon}
+                      <div className={`text-sm sm:text-base font-medium mb-1 ${
+                        selectedOKR.id === okr.id ? 'text-amber-600 dark:text-amber-400' : ''
+                      }`}>
+                        {okr.title}
                       </div>
-                      <div className="ml-3">
-                        <h4 className="font-medium">{okr.title}</h4>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{okr.description}</p>
-                      </div>
-                      <div className="ml-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${
-                          selectedOKR.id === okr.id ? okrColorClasses.text : 'text-gray-400'
-                        }`} viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
+                      <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                        {okr.description.substring(0, 60)}...
                       </div>
                     </button>
-                  );
-                })}
-              </div>
-              
-              {/* Key metrics for selected OKR */}
-              <div className={`${colorClasses.bgLight} p-4 border-t ${colorClasses.border}`}>
-                <h4 className={`text-sm font-medium mb-3 ${colorClasses.text}`}>Key Metrics for {selectedOKR.title}</h4>
-                <div className="space-y-4">
-                  {selectedOKR.metrics.map((metric) => (
-                    <div key={metric.title}>
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-700 dark:text-gray-300">{metric.title}</span>
-                        <span className="font-medium">{metric.value} / {metric.target}</span>
-                      </div>
-                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div className={`h-full ${colorClasses.bg}`} style={{ width: `${metric.progress}%` }}></div>
-                      </div>
-                    </div>
                   ))}
                 </div>
               </div>
             </div>
-          </div>
-          
-          {/* Center panel - Connection visualization */}
-          <div className="lg:col-span-2 flex items-center justify-center">
-            <div className="h-full flex flex-col items-center justify-center py-8">
-              <div className="h-20 w-px bg-dashed bg-gray-300 dark:bg-gray-600"></div>
-              
-              <div className="my-4 w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                </svg>
-              </div>
-              
-              <div className="h-20 w-px bg-dashed bg-gray-300 dark:bg-gray-600"></div>
-            </div>
-          </div>
-          
-          {/* Right panel - Product ideas */}
-          <div className="lg:col-span-5">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-              <div className="border-b border-gray-100 dark:border-gray-700 p-4">
-                <h3 className="text-lg font-bold">Product Ideas</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">See how ideas align with objectives</p>
-              </div>
-              
-              <div className="px-4 py-3">
-                {productIdeas.map((idea) => (
-                  <button
-                    key={idea.id}
-                    onClick={() => setSelectedIdea(idea)}
-                    className={`w-full mb-2 p-3 rounded-lg flex items-start text-left transition-all ${
-                      selectedIdea.id === idea.id 
-                        ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 shadow-sm' 
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent'
-                    }`}
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 flex items-center justify-center text-xl flex-shrink-0">
-                      {idea.icon}
-                    </div>
-                    <div className="ml-3">
-                      <h4 className="font-medium">{idea.title}</h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{idea.description}</p>
-                      
-                      {/* Alignment score bars */}
-                      <div className="mt-2 grid grid-cols-3 gap-2">
-                        {Object.entries(idea.alignmentScores).map(([key, score]) => {
-                          const matchingOKR = companyOKRs.find(okr => okr.id === key);
-                          if (!matchingOKR) return null;
-                          
-                          const scoreColorClasses = getColorClasses(matchingOKR.color);
-                          
-                          return (
-                            <div key={key} className="flex flex-col">
-                              <div className="h-1 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                                <div 
-                                  className={scoreColorClasses.bg}
-                                  style={{ width: `${score}%`, height: '100%' }}
-                                ></div>
-                              </div>
-                              <div className="flex justify-between items-center mt-1">
-                                <span className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
-                                  {matchingOKR.title.split(' ')[0]}
-                                </span>
-                                <span className={`text-[10px] font-medium ${scoreColorClasses.text}`}>
-                                  {score}%
-                                </span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              
-              {/* Alignment details for selected idea */}
-              <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 border-t border-indigo-200 dark:border-indigo-800">
-                <h4 className="text-sm font-medium mb-3 text-indigo-600 dark:text-indigo-400">
-                  Strategic Alignment Details
-                </h4>
-                
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-indigo-100 dark:border-indigo-900/50">
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="text-sm font-medium">{selectedIdea.title}</div>
-                    <div className="text-xs px-2 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400">
-                      {selectedIdea.status}
-                    </div>
-                  </div>
-                  
-                  <div className="mb-3">
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Overall Alignment Score</div>
-                    <div className="flex items-center">
-                      <div className="w-16 h-16 rounded-full border-4 border-indigo-100 dark:border-indigo-900/30 flex items-center justify-center mr-3">
-                        <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                          {Math.round(
-                            Object.values(selectedIdea.alignmentScores).reduce((acc, val) => acc + val, 0) / 
-                            Object.values(selectedIdea.alignmentScores).length
-                          )}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium">
-                          {selectedIdea.alignmentScores[selectedOKR.id as keyof AlignmentScores]}% alignment with {selectedOKR.title}
-                        </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
-                          {selectedIdea.alignmentScores[selectedOKR.id as keyof AlignmentScores] > 80 
-                            ? 'Strong alignment with this objective'
-                            : selectedIdea.alignmentScores[selectedOKR.id as keyof AlignmentScores] > 60
-                              ? 'Moderate alignment with this objective'
-                              : 'Weak alignment with this objective'
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="text-xs text-gray-600 dark:text-gray-400">
-                    This idea has <span className="font-medium text-indigo-600 dark:text-indigo-400">{selectedIdea.impact} impact</span> potential and will contribute significantly to meeting company objectives.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Context hub preview */}
-        <div className="mt-12 max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex items-center">
-            <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <h3 className="font-medium">Context Hub</h3>
-            <div className="ml-auto flex items-center">
-              <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-              <span className="text-xs text-gray-500 dark:text-gray-400">Active</span>
-            </div>
-          </div>
-          
-          <div className="p-4">
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-              ProFlow&apos;s Context Hub continuously analyzes your organization&apos;s strategy documents, meeting notes, and business metrics to ensure all product development aligns with company goals.
-            </p>
             
-            <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">84</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Documents Analyzed</div>
+            {/* Center connector */}
+            <div className="lg:col-span-1 hidden lg:flex items-center justify-center">
+              <div className="h-full flex flex-col items-center justify-center py-8">
+                <div className="h-20 w-px bg-dashed bg-gray-300 dark:bg-gray-600"></div>
+                
+                <div className="my-4 w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                  </svg>
+                </div>
+                
+                <div className="h-20 w-px bg-dashed bg-gray-300 dark:bg-gray-600"></div>
               </div>
-              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">12</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Strategic OKRs Tracked</div>
+            </div>
+            
+            {/* Horizontal connector for mobile */}
+            <div className="lg:hidden flex justify-center my-6">
+              <div className="flex items-center">
+                <div className="h-px w-16 bg-dashed bg-gray-300 dark:bg-gray-600"></div>
+                <div className="mx-4 w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+                <div className="h-px w-16 bg-dashed bg-gray-300 dark:bg-gray-600"></div>
               </div>
-              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">95%</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Context Accuracy</div>
+            </div>
+            
+            {/* Right panel - Product ideas */}
+            <div className="lg:col-span-2">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold mb-4">Aligned Product Ideas</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                  Ideas are automatically scored based on their alignment with company objectives
+                </p>
+                
+                <div className="space-y-4">
+                  {selectedOKR.metrics.map((metric) => (
+                    <div 
+                      key={metric.title}
+                      className="p-3 sm:p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm"
+                    >
+                      <div className="flex items-start">
+                        <div className="mr-3 text-xl sm:text-2xl">📊</div>
+                        <div>
+                          <div className="font-medium text-sm sm:text-base mb-1">{metric.title}</div>
+                          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3">
+                            Progress toward target metric
+                          </p>
+                          
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            <span className="px-2 py-1 text-xs rounded-md bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                              </svg>
+                              {metric.value} / {metric.target}
+                            </span>
+                            <span className="px-2 py-1 text-xs rounded-md bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                              {metric.progress}% complete
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-6 flex justify-center">
+                  <button className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-sm">
+                    Evaluate Your Idea
+                  </button>
+                </div>
               </div>
             </div>
           </div>

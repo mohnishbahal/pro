@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const clarityStages = [
@@ -34,31 +34,51 @@ const clarityStages = [
   }
 ];
 
+// Clarity dimensions with tooltips
+const clarityDimensions = [
+  { name: 'Problem', tooltip: 'How clearly defined is the problem being solved?' },
+  { name: 'User', tooltip: 'How well defined is the target user or customer?' },
+  { name: 'Value', tooltip: 'How clear is the value proposition?' },
+  { name: 'Market', tooltip: 'How well is the market opportunity articulated?' },
+  { name: 'Features', tooltip: 'How clearly defined are the key features?' }
+];
+
 export default function ClarityScoreShowcase() {
   const [currentStage, setCurrentStage] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [userIdea, setUserIdea] = useState('');
+  const [showTooltip, setShowTooltip] = useState<number | null>(null);
+  const [autoProgress, setAutoProgress] = useState(true);
+  const [activeTab, setActiveTab] = useState(0); // 0 for example, 1 for your idea
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Auto-progress every 5 seconds
-    const interval = setInterval(() => {
-      if (currentStage < clarityStages.length - 1) {
-        setIsAnimating(true);
-        setTimeout(() => {
-          setCurrentStage(prev => prev + 1);
-          setIsAnimating(false);
-        }, 1500);
-      } else {
-        // Reset to first stage after showing the last one
-        setIsAnimating(true);
-        setTimeout(() => {
-          setCurrentStage(0);
-          setIsAnimating(false);
-        }, 1500);
-      }
-    }, 7000);
+    if (autoProgress) {
+      // Auto-progress every 5 seconds
+      intervalRef.current = setInterval(() => {
+        if (currentStage < clarityStages.length - 1) {
+          setIsAnimating(true);
+          setTimeout(() => {
+            setCurrentStage(prev => prev + 1);
+            setIsAnimating(false);
+          }, 1500);
+        } else {
+          // Reset to first stage after showing the last one
+          setIsAnimating(true);
+          setTimeout(() => {
+            setCurrentStage(0);
+            setIsAnimating(false);
+          }, 1500);
+        }
+      }, 7000);
+    }
     
-    return () => clearInterval(interval);
-  }, [currentStage]);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [currentStage, autoProgress]);
 
   // Get color classes based on the stage
   const getColorClasses = (color: string) => {
@@ -68,59 +88,140 @@ export default function ClarityScoreShowcase() {
           bg: "bg-red-500",
           light: "bg-red-100 dark:bg-red-900/20",
           text: "text-red-600 dark:text-red-400",
-          ring: "ring-red-500"
+          ring: "ring-red-500",
+          border: "border-red-200 dark:border-red-800"
         };
       case "orange":
         return {
           bg: "bg-orange-500",
           light: "bg-orange-100 dark:bg-orange-900/20",
           text: "text-orange-600 dark:text-orange-400",
-          ring: "ring-orange-500"
+          ring: "ring-orange-500",
+          border: "border-orange-200 dark:border-orange-800"
         };
       case "yellow":
         return {
           bg: "bg-yellow-500",
           light: "bg-yellow-100 dark:bg-yellow-900/20",
           text: "text-yellow-600 dark:text-yellow-400",
-          ring: "ring-yellow-500"
+          ring: "ring-yellow-500",
+          border: "border-yellow-200 dark:border-yellow-800"
         };
       case "green":
         return {
           bg: "bg-emerald-500",
           light: "bg-emerald-100 dark:bg-emerald-900/20",
           text: "text-emerald-600 dark:text-emerald-400",
-          ring: "ring-emerald-500"
+          ring: "ring-emerald-500",
+          border: "border-emerald-200 dark:border-emerald-800"
         };
       default:
         return {
           bg: "bg-gray-500",
           light: "bg-gray-100 dark:bg-gray-900/20",
           text: "text-gray-600 dark:text-gray-400",
-          ring: "ring-gray-500"
+          ring: "ring-gray-500",
+          border: "border-gray-200 dark:border-gray-800"
         };
     }
   };
 
   const current = clarityStages[currentStage];
   const colorClasses = getColorClasses(current.color);
+  
+  const handleStageClick = (idx: number) => {
+    // Pause auto-progression when user interacts
+    setAutoProgress(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    
+    setIsAnimating(true);
+    setTimeout(() => {
+      setCurrentStage(idx);
+      setIsAnimating(false);
+    }, 800);
+  };
+  
+  const handleIdeaSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userIdea.trim() === '') return;
+    
+    // This would normally send to an API for analysis
+    // For now, just provide feedback based on length/detail
+    setActiveTab(1);
+    setAutoProgress(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    
+    // Simple estimation of clarity score based on length
+    const words = userIdea.split(/\s+/).length;
+    let estimatedStage = 0;
+    
+    if (words > 50) estimatedStage = 3;
+    else if (words > 25) estimatedStage = 2;
+    else if (words > 10) estimatedStage = 1;
+    
+    setIsAnimating(true);
+    setTimeout(() => {
+      setCurrentStage(estimatedStage);
+      setIsAnimating(false);
+    }, 800);
+  };
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900">
+    <section className="py-16 sm:py-20 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <span className="inline-block px-3 py-1 text-sm font-semibold text-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 rounded-full mb-3">
-            AI-Powered Assessment
+          <span className="inline-block px-3 py-1 text-sm font-semibold text-orange-500 bg-orange-50 dark:bg-orange-900/30 rounded-full mb-3">
+            Clarifying Your Vision
           </span>
-          <h2 className="text-3xl font-bold mb-4">From Vague Ideas to Clear PRDs</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">From Fuzzy Ideas to Crystal Clear Concepts</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Watch how AI mentors transform unclear concepts into strategic, well-defined product requirements with real-time clarity scoring.
+            Watch as your initial thoughts transform into precise, actionable plans. Our Clarity Score measures and guides your progress toward a clearly defined product concept.
           </p>
         </div>
 
         <div className="max-w-5xl mx-auto">
+          {/* Tab selection for examples vs. your idea */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white dark:bg-gray-800 rounded-full p-1 inline-flex">
+              <button 
+                onClick={() => {
+                  setActiveTab(0);
+                  setAutoProgress(true);
+                }} 
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                  activeTab === 0 
+                    ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' 
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                Example Ideas
+              </button>
+              <button 
+                onClick={() => setActiveTab(1)} 
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                  activeTab === 1 
+                    ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' 
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                Try Your Idea
+              </button>
+            </div>
+          </div>
+          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Clarity score visualization */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 flex flex-col justify-center items-center">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 flex flex-col justify-center items-center hover:shadow-2xl transition-all"
+            >
               <h3 className="text-xl font-bold mb-2">Clarity Score</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-8 text-center">
                 Our AI continuously evaluates your idea across 10 dimensions
@@ -192,30 +293,50 @@ export default function ClarityScoreShowcase() {
                 {clarityStages.map((stage, idx) => (
                   <button
                     key={idx}
-                    onClick={() => {
-                      setIsAnimating(true);
-                      setTimeout(() => {
-                        setCurrentStage(idx);
-                        setIsAnimating(false);
-                      }, 1500);
-                    }}
-                    className={`w-12 h-1 rounded-full transition-all ${
+                    onClick={() => handleStageClick(idx)}
+                    className={`w-12 h-1 rounded-full transition-all cursor-pointer ${
                       idx === currentStage 
                         ? getColorClasses(stage.color).bg
-                        : 'bg-gray-200 dark:bg-gray-700'
+                        : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'
                     }`}
                     aria-label={`View ${stage.title} stage`}
                   />
                 ))}
               </div>
-            </div>
+              
+              {/* User idea input for "Try Your Idea" tab */}
+              {activeTab === 1 && (
+                <div className="w-full mt-8">
+                  <form onSubmit={handleIdeaSubmit} className="space-y-3">
+                    <textarea 
+                      value={userIdea}
+                      onChange={(e) => setUserIdea(e.target.value)}
+                      className="w-full h-24 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                      placeholder="Describe your product idea here..."
+                    />
+                    <button
+                      type="submit"
+                      className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+                    >
+                      Analyze My Idea
+                    </button>
+                  </form>
+                </div>
+              )}
+            </motion.div>
             
             {/* Idea evolution showcase */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all"
+            >
               <div className="p-6 border-b border-gray-100 dark:border-gray-700">
                 <h3 className="text-xl font-bold mb-1">Idea Evolution</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Watch how your concept transforms with AI guidance
+                  {activeTab === 0 ? 'Watch how concepts transform with AI guidance' : 'See how your idea could be refined'}
                 </p>
               </div>
               
@@ -228,19 +349,22 @@ export default function ClarityScoreShowcase() {
                   </div>
                   <div className="ml-3">
                     <div className="font-medium">Product Idea</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">Stage {currentStage + 1} of {clarityStages.length}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      Stage {currentStage + 1} of {clarityStages.length}
+                      {activeTab === 1 && ' • Your Idea Analysis'}
+                    </div>
                   </div>
                 </div>
                 
                 <motion.div
-                  key={`sample-${current.title}`}
+                  key={`sample-${activeTab}-${current.title}`}
                   className={`p-5 ${colorClasses.light} rounded-xl mb-6`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
                   <p className={`${colorClasses.text} text-sm`}>
-                    {current.sample}
+                    {activeTab === 0 ? current.sample : (userIdea || "Enter your idea in the form to see how it would evolve through the clarity stages.")}
                   </p>
                 </motion.div>
                 
@@ -256,7 +380,7 @@ export default function ClarityScoreShowcase() {
                   </div>
                   
                   <motion.div
-                    key={`insight-${current.title}`}
+                    key={`insight-${activeTab}-${current.title}`}
                     className="space-y-2"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -287,13 +411,26 @@ export default function ClarityScoreShowcase() {
                       </>
                     )}
                   </motion.div>
+                  
+                  {/* Action buttons */}
+                  {activeTab === 1 && userIdea && (
+                    <div className="mt-4 flex justify-end">
+                      <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition-colors shadow-sm">
+                        Get Full AI Analysis
+                      </button>
+                    </div>
+                  )}
                 </div>
                 
-                {/* Progress indicators */}
+                {/* Progress indicators with tooltips */}
                 <div className="mt-6 grid grid-cols-5 gap-2">
-                  {['Problem', 'User', 'Value', 'Market', 'Features'].map((dimension, idx) => (
-                    <div key={dimension} className="text-center">
-                      <div className="relative mx-auto w-8 h-8 mb-1">
+                  {clarityDimensions.map((dimension, idx) => (
+                    <div key={dimension.name} className="text-center relative">
+                      <div 
+                        className="relative mx-auto w-8 h-8 mb-1 cursor-help"
+                        onMouseEnter={() => setShowTooltip(idx)}
+                        onMouseLeave={() => setShowTooltip(null)}
+                      >
                         <div className="absolute inset-0 rounded-full bg-gray-100 dark:bg-gray-700"></div>
                         <div 
                           className={`absolute inset-0 rounded-full ${colorClasses.bg}`}
@@ -302,14 +439,38 @@ export default function ClarityScoreShowcase() {
                           }}
                         ></div>
                         <div className="absolute inset-1 rounded-full bg-white dark:bg-gray-800"></div>
+                        
+                        {/* Tooltip */}
+                        {showTooltip === idx && (
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-40 bg-gray-900 text-white text-xs rounded-lg py-1 px-2 shadow-lg z-10">
+                            {dimension.tooltip}
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 rotate-45 bg-gray-900"></div>
+                          </div>
+                        )}
                       </div>
-                      <div className="text-xs font-medium">{dimension}</div>
+                      <div className="text-xs font-medium">{dimension.name}</div>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
+          
+          {/* Additional CTA for full analysis */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-12 text-center"
+          >
+            <a href="/start-free-analysis" className="inline-block px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-colors shadow-lg hover:shadow-xl">
+              Get Free Clarity Analysis For Your Idea
+            </a>
+            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+              No sign-up required • Results in under 2 minutes
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>

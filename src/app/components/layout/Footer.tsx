@@ -83,18 +83,18 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:py-12 lg:py-16 sm:px-6 lg:px-8">
         <div className="xl:grid xl:grid-cols-5 xl:gap-8">
-          <div className="space-y-8 xl:col-span-1">
+          <div className="space-y-6 xl:col-span-1">
             <div>
-              <Link href="/" className="text-2xl font-bold tracking-tight">
+              <Link href="/" className="text-xl sm:text-2xl font-bold tracking-tight">
                 ProFlow<span className="text-blue-500">.dev</span>
               </Link>
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-xs">
+              <p className="mt-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-xs">
                 AI-augmented product development platform that helps teams rapidly develop ideas into well-defined requirements
               </p>
             </div>
-            <div className="flex space-x-6">
+            <div className="flex space-x-5">
               {socialLinks.map((item) => (
                 <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
                   <span className="sr-only">{item.name}</span>
@@ -103,7 +103,7 @@ export default function Footer() {
               ))}
             </div>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-8 xl:col-span-4 xl:mt-0 md:grid-cols-4">
+          <div className="mt-10 sm:mt-12 grid grid-cols-2 gap-8 xl:col-span-4 xl:mt-0 md:grid-cols-4">
             {footerLinks.map((group) => (
               <div key={group.title}>
                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100">{group.title}</h3>
@@ -112,7 +112,7 @@ export default function Footer() {
                     <li key={link.name}>
                       <Link 
                         href={link.href}
-                        className="text-sm text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400"
+                        className="text-xs sm:text-sm text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400"
                       >
                         {link.name}
                       </Link>
@@ -123,11 +123,11 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <div className="mt-12 border-t border-gray-200 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-base text-gray-500 dark:text-gray-400 mb-4 md:mb-0">
+        <div className="mt-10 sm:mt-12 border-t border-gray-200 dark:border-gray-800 pt-6 sm:pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} ProFlow, Inc. All rights reserved.
           </p>
-          <div className="flex space-x-6 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex flex-wrap justify-center gap-y-2 gap-x-4 sm:gap-x-6 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
             <Link href="/privacy" className="hover:text-blue-500 dark:hover:text-blue-400">
               Privacy
             </Link>

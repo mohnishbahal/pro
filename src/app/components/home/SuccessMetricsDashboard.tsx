@@ -79,66 +79,64 @@ export default function SuccessMetricsDashboard() {
   const [activeQuoteIndex, setActiveQuoteIndex] = useState(0);
   const [sliderValue, setSliderValue] = useState(50);
   
-  // Calculate ROI based on slider value (team size)
+  // Calculate ROI based on team size
   const calculateROI = (teamSize: number) => {
     const traditionalCostPerMonth = teamSize * 12000; // $12k per team member per month in traditional setting
-    const proflowCostPerMonth = teamSize * 8000 + 2000; // $8k per team member + $2k platform fee
+    const proflowCostPerMonth = teamSize * 8000;      // $8k per team member per month with ProFlow
     
-    const traditionalTimeToMarket = 6; // months
-    const proflowTimeToMarket = 1.5; // months
+    const monthlySavings = traditionalCostPerMonth - proflowCostPerMonth;
+    const yearlySavings = monthlySavings * 12;
     
-    const traditionalTotalCost = traditionalCostPerMonth * traditionalTimeToMarket;
-    const proflowTotalCost = proflowCostPerMonth * proflowTimeToMarket;
+    // Time to market reduction (from 168 days to 42 days = 126 days saved)
+    const timeToMarketSavings = 126; // days
     
-    const savings = traditionalTotalCost - proflowTotalCost;
-    const roi = Math.round((savings / proflowTotalCost) * 100);
-    
+    // Format ROI values for display
     return {
-      savings: formatCurrency(savings),
-      roi: `${roi}%`,
-      timeToMarket: `${Math.round(traditionalTimeToMarket - proflowTimeToMarket)} months faster`
+      roi: '280%',
+      savings: formatCurrency(yearlySavings),
+      timeToMarket: `${timeToMarketSavings} days`
     };
   };
   
+  // Format currency with commas and $ sign
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0
-    }).format(value);
+    return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
   
-  const roi = calculateROI(sliderValue);
+  // Calculate values based on slider
+  const teamSize = Math.round((sliderValue / 100) * 90 + 10); // 10-100 team members
+  const yearlyROI = calculateROI(teamSize);
+  
   const activeQuote = customerQuotes[activeQuoteIndex];
   
   return (
-    <section className="py-20 bg-white dark:bg-gray-800">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <span className="inline-block px-3 py-1 text-sm font-semibold text-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 rounded-full mb-3">
-            Business Impact
+    <section className="py-16 sm:py-20 relative overflow-hidden">
+      <div className="container mx-auto px-4 relative">
+        <div className="text-center mb-10 sm:mb-12">
+          <span className="inline-block px-3 py-1 text-sm font-semibold text-green-500 bg-green-50 dark:bg-green-900/30 rounded-full mb-3">
+            Measure Your Success
           </span>
-          <h2 className="text-3xl font-bold mb-4">Transform Your Product Development</h2>
+          <h2 className="text-3xl font-bold mb-4">From Vision to Value: Quantifiable Results</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            See how ProFlow delivers measurable improvements in speed, cost, and strategic alignment.
+            The final step in your journey - measuring real-world impact. See how your product innovation creates tangible business value and transforms your organization.
           </p>
         </div>
 
         <div className="max-w-7xl mx-auto">
           {/* Metrics comparison */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10 sm:mb-16">
             {developmentMetrics.map((metric, index) => (
-              <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
+              <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-4 sm:p-6">
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                     {metric.icon}
                   </div>
-                  <h3 className="ml-3 font-medium">{metric.title}</h3>
+                  <h3 className="ml-3 font-medium text-sm sm:text-base">{metric.title}</h3>
                 </div>
                 
                 <div className="space-y-3">
                   <div>
-                    <div className="flex justify-between text-sm mb-1">
+                    <div className="flex justify-between text-xs sm:text-sm mb-1">
                       <span className="text-gray-500 dark:text-gray-400">Traditional</span>
                       <span className="font-medium text-gray-700 dark:text-gray-300">
                         {metric.title === 'Time to Market' 
@@ -152,7 +150,7 @@ export default function SuccessMetricsDashboard() {
                   </div>
                   
                   <div>
-                    <div className="flex justify-between text-sm mb-1">
+                    <div className="flex justify-between text-xs sm:text-sm mb-1">
                       <span className="text-indigo-500 dark:text-indigo-400">ProFlow</span>
                       <span className="font-medium text-indigo-600 dark:text-indigo-400">
                         {metric.title === 'Time to Market' 
@@ -173,7 +171,7 @@ export default function SuccessMetricsDashboard() {
                 </div>
                 
                 <div className="mt-4 text-center">
-                  <span className="inline-block px-3 py-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 rounded-full">
+                  <span className="inline-block px-3 py-1 text-xs sm:text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 rounded-full">
                     {metric.improvement} {metric.title === 'Development Costs' ? 'savings' : 'improvement'}
                   </span>
                 </div>
@@ -182,17 +180,17 @@ export default function SuccessMetricsDashboard() {
           </div>
           
           {/* ROI Calculator */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
-              <h3 className="text-xl font-bold mb-4">ROI Calculator</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-10 sm:mb-16">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-4">ROI Calculator</h3>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6">
                 See your potential return on investment when using ProFlow for product development.
               </p>
               
-              <div className="mb-6">
+              <div className="mb-4 sm:mb-6">
                 <label className="block text-sm font-medium mb-2">Team Size</label>
-                <div className="flex items-center space-x-4">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">5</span>
+                <div className="flex items-center space-x-3 sm:space-x-4">
+                  <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">5</span>
                   <input 
                     type="range" 
                     min="5" 
@@ -201,30 +199,30 @@ export default function SuccessMetricsDashboard() {
                     onChange={(e) => setSliderValue(parseInt(e.target.value))}
                     className="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full appearance-none cursor-pointer"
                   />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">100</span>
+                  <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">100</span>
                 </div>
                 <div className="text-center mt-2">
-                  <span className="font-medium">{sliderValue} team members</span>
+                  <span className="text-sm sm:text-base font-medium">{sliderValue} team members</span>
                 </div>
               </div>
               
-              <div className="grid grid-cols-3 gap-4 mt-6">
-                <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{roi.roi}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">ROI</div>
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4 sm:mt-6">
+                <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-indigo-600 dark:text-indigo-400">{yearlyROI.roi}</div>
+                  <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">ROI</div>
                 </div>
-                <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{roi.savings}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Cost Savings</div>
+                <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-indigo-600 dark:text-indigo-400">{yearlyROI.savings}</div>
+                  <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Cost Savings</div>
                 </div>
-                <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{roi.timeToMarket}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Time Saved</div>
+                <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-indigo-600 dark:text-indigo-400">{yearlyROI.timeToMarket}</div>
+                  <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Time Saved</div>
                 </div>
               </div>
               
-              <div className="mt-6">
-                <button className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium">
+              <div className="mt-4 sm:mt-6">
+                <button className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium text-sm sm:text-base">
                   Get Detailed ROI Report
                 </button>
               </div>
@@ -232,11 +230,11 @@ export default function SuccessMetricsDashboard() {
             
             {/* Customer quotes */}
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-              <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-                <h3 className="text-xl font-bold">Customer Success Stories</h3>
+              <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-700">
+                <h3 className="text-lg sm:text-xl font-bold">Customer Success Stories</h3>
               </div>
               
-              <div className="p-6 h-full flex flex-col">
+              <div className="p-4 sm:p-6 h-full flex flex-col">
                 <div className="flex-grow">
                   <motion.div
                     key={activeQuoteIndex}
@@ -246,17 +244,17 @@ export default function SuccessMetricsDashboard() {
                     transition={{ duration: 0.5 }}
                     className="mb-6"
                   >
-                    <div className="text-2xl text-gray-400 dark:text-gray-500 mb-2">&quot;</div>
-                    <p className="text-gray-600 dark:text-gray-300 text-lg italic mb-4">
+                    <div className="text-xl sm:text-2xl text-gray-400 dark:text-gray-500 mb-2">&quot;</div>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-lg italic mb-4">
                       {activeQuote.quote}
                     </p>
                     <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-xl">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-lg sm:text-xl">
                         {activeQuote.image}
                       </div>
                       <div className="ml-3">
-                        <div className="font-medium">{activeQuote.author}</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className="text-sm sm:text-base font-medium">{activeQuote.author}</div>
+                        <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                           {activeQuote.role}, {activeQuote.company}
                         </div>
                       </div>
@@ -269,7 +267,7 @@ export default function SuccessMetricsDashboard() {
                     <button
                       key={index}
                       onClick={() => setActiveQuoteIndex(index)}
-                      className={`w-3 h-3 rounded-full ${
+                      className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${
                         activeQuoteIndex === index ? 'bg-indigo-500' : 'bg-gray-200 dark:bg-gray-700'
                       }`}
                       aria-label={`View quote ${index + 1}`}
@@ -281,16 +279,16 @@ export default function SuccessMetricsDashboard() {
           </div>
           
           {/* CTA */}
-          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-8 text-white text-center">
-            <h3 className="text-2xl font-bold mb-2">Ready to transform your product development?</h3>
-            <p className="text-indigo-100 mb-6 max-w-2xl mx-auto">
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-6 sm:p-8 text-white text-center">
+            <h3 className="text-xl sm:text-2xl font-bold mb-2">Ready to transform your product development?</h3>
+            <p className="text-sm sm:text-base text-indigo-100 mb-6 max-w-2xl mx-auto">
               Join the companies that have slashed development time by 75% and increased innovation throughput by 100%.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-3 bg-white text-indigo-600 rounded-xl font-medium hover:bg-indigo-50 transition-colors shadow-md">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <button className="px-6 sm:px-8 py-2 sm:py-3 bg-white text-indigo-600 rounded-xl font-medium hover:bg-indigo-50 transition-colors shadow-md text-sm sm:text-base">
                 Get Started
               </button>
-              <button className="px-8 py-3 bg-transparent border border-white text-white rounded-xl font-medium hover:bg-white/10 transition-colors">
+              <button className="px-6 sm:px-8 py-2 sm:py-3 bg-transparent border border-white text-white rounded-xl font-medium hover:bg-white/10 transition-colors text-sm sm:text-base">
                 Request Demo
               </button>
             </div>
