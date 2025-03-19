@@ -77,25 +77,72 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mb-8 flex items-center justify-center lg:justify-start"
+              className="mb-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3"
             >
-              <div className="flex -space-x-2 mr-3">
-                <div className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 overflow-hidden bg-gray-200">
-                  <img src="/images/avatars/user1.jpg" alt="User" onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=Sarah+J&background=4F46E5&color=fff"} />
+              <div className="flex -space-x-3 mr-3">
+                <div className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-gray-800 overflow-hidden bg-white shadow-lg">
+                  <img 
+                    src="/images/avatars/avatar-1.jpg" 
+                    alt="User" 
+                    className="w-full h-full object-cover"
+                    onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=Emma+Wilson&background=4F46E5&color=fff"} 
+                  />
                 </div>
-                <div className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 overflow-hidden bg-gray-200">
-                  <img src="/images/avatars/user2.jpg" alt="User" onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=Michael+P&background=7C3AED&color=fff"} />
+                <div className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-gray-800 overflow-hidden bg-white shadow-lg">
+                  <img 
+                    src="/images/avatars/avatar-2.jpg" 
+                    alt="User" 
+                    className="w-full h-full object-cover"
+                    onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=Michael+Chen&background=7C3AED&color=fff"} 
+                  />
                 </div>
-                <div className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 overflow-hidden bg-gray-200">
-                  <img src="/images/avatars/user3.jpg" alt="User" onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=Alex+R&background=4338CA&color=fff"} />
+                <div className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-gray-800 overflow-hidden bg-white shadow-lg">
+                  <img 
+                    src="/images/avatars/avatar-3.jpg" 
+                    alt="User" 
+                    className="w-full h-full object-cover"
+                    onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=Sarah+Johnson&background=4338CA&color=fff"} 
+                  />
                 </div>
-                <div className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 overflow-hidden bg-gray-200">
-                  <img src="/images/avatars/user4.jpg" alt="User" onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=Emma+T&background=3B82F6&color=fff"} />
+                <div className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-gray-800 overflow-hidden bg-white shadow-lg">
+                  <img 
+                    src="/images/avatars/avatar-4.jpg" 
+                    alt="User" 
+                    className="w-full h-full object-cover"
+                    onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=David+Kim&background=3B82F6&color=fff"} 
+                  />
+                </div>
+                <div className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-gray-800 overflow-hidden bg-white shadow-lg">
+                  <img 
+                    src="/images/avatars/avatar-5.jpg" 
+                    alt="User" 
+                    className="w-full h-full object-cover"
+                    onError={(e) => e.currentTarget.src = "https://ui-avatars.com/api/?name=Alex+Rodriguez&background=06B6D4&color=fff"} 
+                  />
+                </div>
+                <div className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-gray-800 flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 text-xs font-bold">
+                  +495
                 </div>
               </div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                <span className="font-semibold">500+</span> teams already using ProFlow
-              </span>
+              <div className="flex flex-col items-center sm:items-start">
+                <div className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">500+</span> teams already using ProFlow
+                </div>
+                <div className="flex space-x-2 mt-1">
+                  <div className="bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-0.5 text-xs text-gray-600 dark:text-gray-400 flex items-center">
+                    <div className="w-2 h-2 rounded-full bg-blue-500 mr-1"></div>
+                    Tech
+                  </div>
+                  <div className="bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-0.5 text-xs text-gray-600 dark:text-gray-400 flex items-center">
+                    <div className="w-2 h-2 rounded-full bg-purple-500 mr-1"></div>
+                    Finance
+                  </div>
+                  <div className="bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-0.5 text-xs text-gray-600 dark:text-gray-400 flex items-center">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 mr-1"></div>
+                    Healthcare
+                  </div>
+                </div>
+              </div>
             </motion.div>
             
             <motion.div 
