@@ -6,14 +6,14 @@ import PRDEvolution from "./components/home/PRDEvolution";
 import StrategicAlignment from "./components/home/StrategicAlignment";
 import SuccessMetricsDashboard from "./components/home/SuccessMetricsDashboard";
 import IdeasHopper from "./components/home/IdeasHopper";
-import Navbar from "./components/layout/Navbar";
+import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
 export default function Home() {
   return (
     <>
       {/* Navigation */}
-      <Navbar />
+      <Header variant="marketing" />
       
       <main className="min-h-screen overflow-x-hidden">
         {/* 1. Hero Section */}

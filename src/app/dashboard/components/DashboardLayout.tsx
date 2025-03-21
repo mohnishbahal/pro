@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ReactNode, useState, useEffect } from "react";
-import Header from "./Header";
+import Header from "../../components/layout/Header";
 import Sidebar from "./Sidebar";
 
 interface DashboardLayoutProps {
@@ -10,13 +10,13 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   // Check if we should initialize the sidebar as collapsed on mobile
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setIsSidebarCollapsed(true);
+        setIsSidebarOpen(false);
       }
     };
     
@@ -31,25 +31,28 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }, []);
   
   const toggleSidebar = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
       {/* Sidebar */}
-      <Sidebar isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
-
-      {/* Main Content */}
-      <div 
-        className={`flex flex-col flex-1 ${isSidebarCollapsed ? 'ml-20' : 'ml-0 md:ml-64'} transition-all duration-300`}
-      >
-        {/* Top Navigation */}
-        <Header toggleSidebar={toggleSidebar} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      
+      {/* Main content */}
+      <div className="flex-1">
+        {/* Header */}
+        <Header 
+          variant="dashboard" 
+          toggleSidebar={toggleSidebar} 
+          userName="Jane Doe" 
+          notificationCount={2} 
+        />
         
-        {/* Main content */}
-        <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 pt-16 pb-8">
+        {/* Content */}
+        <div className="pt-16">
           {children}
-        </main>
+        </div>
       </div>
     </div>
   );

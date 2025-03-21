@@ -75,13 +75,29 @@ interface NavItem {
 }
 
 interface SidebarProps {
-  isCollapsed: boolean;
-  toggleSidebar: () => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export default function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
-  const [activeItem, setActiveItem] = useState<string>("/dashboard");
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const [activeItem, setActiveItem] = useState("dashboard");
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   
+  // Handle screen resize and close sidebar on mobile if window size changes
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768 && isOpen) {
+        onClose();
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isOpen, onClose]);
+  
+  // Convert isOpen to isCollapsed for backward compatibility with existing design
+  const isCollapsed = !isOpen && window.innerWidth >= 768;
+
   // Navigation groups
   const mainNavItems: NavItem[] = [
     { name: "Dashboard", href: "/dashboard", icon: <HomeIcon /> },
@@ -135,36 +151,52 @@ export default function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
   };
 
   return (
-    <motion.div 
-      className={`fixed h-full bg-white/90 backdrop-blur-md dark:bg-gray-900/80 z-20 border-r border-gray-100 dark:border-gray-800`}
-      initial={{ width: isCollapsed ? 80 : 256 }}
-      animate={{ width: isCollapsed ? 80 : 256 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-    >
-      <div className="flex flex-col h-full">
-        {/* Logo section */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-100 dark:border-gray-800">
-          <AnimatePresence>
-            {!isCollapsed && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Link href="/" className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">P</div>
-                  <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">ProFlow</span>
-                </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
+    <>
+      {/* Mobile overlay */}
+      {isOpen && window.innerWidth < 768 && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div 
+        className={`fixed md:sticky top-0 left-0 h-full bg-white dark:bg-gray-800 border-r border-gray-100 dark:border-gray-700 transition-all duration-300 z-30 
+          ${isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full md:translate-x-0'}`}
+      >
+        {/* Sidebar header with logo */}
+        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-100 dark:border-gray-700">
+          <Link href="/dashboard" className="flex items-center">
+            <div className={`transition-all duration-300 ${isCollapsed ? 'w-8' : 'w-8'}`}>
+              <svg viewBox="0 0 40 40" className="w-full h-full">
+                <circle cx="20" cy="20" r="20" className="fill-indigo-600 dark:fill-indigo-500" />
+                <path d="M14 10h8.5c2.8 0 5 2.2 5 5s-2.2 5-5 5H14V10z" fill="white" />
+                <rect x="14" y="20" width="4" height="10" fill="white" />
+              </svg>
+            </div>
+            <span className={`ml-2 font-bold text-gray-900 dark:text-white transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`}>
+              ProFlow
+            </span>
+          </Link>
           
+          {/* Toggle button */}
           <button 
-            onClick={toggleSidebar}
-            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            onClick={onClose}
+            className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 md:block hidden"
           >
             {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </button>
+          
+          {/* Close button for mobile */}
+          <button 
+            onClick={onClose}
+            className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 md:hidden"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
         </div>
         
@@ -238,6 +270,6 @@ export default function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
           )}
         </div>
       </div>
-    </motion.div>
+    </>
   );
 } 
